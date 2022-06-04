@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-04 13:40:07
+ * @LastEditTime: 2022-06-04 14:27:16
  * @LastEditors: your name
  * @Description: 
  */
@@ -14,6 +14,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+// 引入环境变量 默认读取根目录下的 .env
+require('dotenv').config()
 // 引入数据库连接
 require('./dao/dbConnect')
 
