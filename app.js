@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-04 14:27:16
+ * @LastEditTime: 2022-06-05 16:22:01
  * @LastEditors: your name
  * @Description: 
  */
@@ -11,13 +11,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+
 
 // 引入环境变量 默认读取根目录下的 .env
 require('dotenv').config()
 // 引入数据库连接
-require('./dao/dbConnect')
+require('./dao/db')
+
+var adminRouter = require('./routes/admin');
 
 var app = express();
 
@@ -29,8 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 使用路由中间件
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

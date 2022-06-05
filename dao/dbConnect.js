@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-04 14:27:52
+ * @LastEditTime: 2022-06-05 16:35:10
  * @LastEditors: your name
  * @Description: 负责连接数据库
  */
@@ -15,11 +15,13 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 });
 
 // 测试连接
-(async function () {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-}())
+// (async function () {
+//   try {
+//     await sequelize.authenticate();
+//     console.log('Connection has been established successfully.');
+//   } catch (error) {
+//     console.error('Unable to connect to the database:', error);
+//   }
+// }())
+
+module.exports = sequelize;
