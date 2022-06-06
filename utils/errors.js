@@ -1,9 +1,11 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-04 14:22:32
+ * @LastEditTime: 2022-06-06 21:24:51
  * @LastEditors: your name
  * @Description: 自定义错误，当错误发生的时候，捕获并抛出自定义错误信息
  */
+
+const { formatResponse } = require('../utils/tool')
 
 // 基类
 class ServiceError extends Error {
@@ -16,7 +18,10 @@ class ServiceError extends Error {
     super(message);
     this.code = code;
   }
-  toResponseJson() { }
+
+  toResponseJson() {
+    return formatResponse(this.code, this.message, null)
+  }
 }
 
 // 文件上传错误
