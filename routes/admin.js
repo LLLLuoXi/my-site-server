@@ -1,13 +1,13 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-06 21:10:13
+ * @LastEditTime: 2022-06-07 22:06:56
  * @LastEditors: your name
  * @Description: 
  */
 
 var express = require('express');
 var router = express.Router();
-const { loginService } = require('../service/adminService')
+const { loginService, updateAdminService } = require('../service/adminService')
 const { formatResponse, analysisToken } = require('../utils/tool')
 
 router.post('/login', async function (req, res, next) {
@@ -35,6 +35,13 @@ router.get('/whoami', async function (req, res, next) {
     "name": token.name,
     "id": token.id
   }))
+})
+
+// 修改
+router.put('/', async function (req, res, next) {
+  // console.log(req.body, '>>>');
+  res.send(await updateAdminService(req.body))
+
 })
 
 module.exports = router;

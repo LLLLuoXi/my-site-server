@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-06 21:30:01
+ * @LastEditTime: 2022-06-07 22:20:47
  * @LastEditors: your name
  * @Description: 
  */
@@ -12,12 +12,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { expressjwt: jwt } = require("express-jwt");
 var md5 = require('md5');
-var { ForbiddenError } = require('./utils/errors')
+var { ForbiddenError, UnknownError, ServiceError } = require('./utils/errors')
 
 
 
 // 引入环境变量 默认读取根目录下的 .env
 require('dotenv').config()
+require('express-async-errors');
 // 引入数据库连接
 require('./dao/db')
 
@@ -58,8 +59,11 @@ app.use(function (err, req, res, next) {
   console.log(err)
   if (err.name === "UnauthorizedError") {
     res.send(new ForbiddenError("未登录，或者登录已过期").toResponseJson())
-  } else {
-    next(err);
+  } else if (err instanceof ServiceError) {
+    res.send(err.toResponseJson())
+  }
+  else {
+    res.send(new UnknownError().toResponseJson())
   }
 });
 

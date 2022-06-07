@@ -1,14 +1,17 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-06 20:45:17
+ * @LastEditTime: 2022-06-07 22:40:08
  * @LastEditors: your name
  * @Description: admin 业务逻辑层
  */
 
 const md5 = require('md5')
 const jwt = require('jsonwebtoken')
-const { loginDao } = require('../dao/adminDao')
+const { loginDao, updateAdminDao } = require('../dao/adminDao')
+const { ValidationError } = require('../utils/errors')
+const { formatResponse } = require('../utils/tool')
 
+// 登录
 module.exports.loginService = async function (loginInfo) {
   console.log('loginInfo', loginInfo);
   loginInfo.loginPwd = md5(loginInfo.loginPwd)
@@ -38,4 +41,33 @@ module.exports.loginService = async function (loginInfo) {
   }
 
   return { data }
+}
+
+//更新
+module.exports.updateAdminService = async function (accountInfo) {
+  console.log('accountInfo', accountInfo);
+  // 使用旧密码查询账号信息对应的用户
+  const adminInfo = await loginDao({
+    loginId: accountInfo.loginId,
+    loginPwd: md5(accountInfo.oldLoginPwd)
+  })
+  console.log('adminInfo', adminInfo);
+  // 旧密码正确,查到用户信息
+  if (adminInfo && adminInfo.dataValues) {
+    const newPwd = md5(accountInfo.loginPwd);
+    await updateAdminDao({
+      name: accountInfo.name,
+      loginId: accountInfo.loginId,
+      loginPwd: newPwd,
+    })
+    return formatResponse(0, "", {
+      "loginId": accountInfo.loginId,
+      "name": accountInfo.name,
+      "id": adminInfo.dataValues.id
+    })
+    // console.log('result>>>', result);
+  } else {
+    // 密码不正确
+    throw new ValidationError("旧密码不正确")
+  }
 }

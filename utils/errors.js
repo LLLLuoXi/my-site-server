@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-06 21:24:51
+ * @LastEditTime: 2022-06-07 22:20:43
  * @LastEditors: your name
  * @Description: 自定义错误，当错误发生的时候，捕获并抛出自定义错误信息
  */
@@ -53,7 +53,7 @@ exports.NotFoundError = class extends ServiceError {
 }
 
 // 未知错误
-exports.NotFoundError = class extends ServiceError {
+exports.UnknownError = class extends ServiceError {
   constructor() {
     super('server internal error', 500)
   }
