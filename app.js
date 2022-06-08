@@ -1,18 +1,19 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-07 22:20:47
+ * @LastEditTime: 2022-06-08 22:02:24
  * @LastEditors: your name
  * @Description: 
  */
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var { expressjwt: jwt } = require("express-jwt");
-var md5 = require('md5');
-var { ForbiddenError, UnknownError, ServiceError } = require('./utils/errors')
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const { expressjwt: jwt } = require("express-jwt");
+const md5 = require('md5');
+const session = require('express-session');
+const { ForbiddenError, UnknownError, ServiceError } = require('./utils/errors')
 
 
 
@@ -23,8 +24,15 @@ require('express-async-errors');
 require('./dao/db')
 
 var adminRouter = require('./routes/admin');
+var captchaRouter = require('./routes/captcha')
 
 var app = express();
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true
+}))
 
 // 使用中间件
 app.use(logger('dev'));
@@ -41,13 +49,15 @@ app.use(jwt({
 }).unless({
   // 需要排除token验证的路由
   path: [
-    { "url": "/api/admin/login", methods: ["POST"] }
+    { "url": "/api/admin/login", methods: ["POST"] },
+    { "url": "/res/captcha", methods: ["GET"] }
   ]
 }))
 
 
 // 使用路由中间件
 app.use('/api/admin', adminRouter);
+app.use('/res/captcha', captchaRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -56,7 +66,7 @@ app.use(function (req, res, next) {
 
 // 错误处理
 app.use(function (err, req, res, next) {
-  console.log(err)
+  console.log('-------', err)
   if (err.name === "UnauthorizedError") {
     res.send(new ForbiddenError("未登录，或者登录已过期").toResponseJson())
   } else if (err instanceof ServiceError) {
