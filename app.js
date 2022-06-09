@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-08 22:02:24
+ * @LastEditTime: 2022-06-09 21:27:37
  * @LastEditors: your name
  * @Description: 
  */
@@ -23,8 +23,10 @@ require('express-async-errors');
 // 引入数据库连接
 require('./dao/db')
 
+// 引入路由
 var adminRouter = require('./routes/admin');
 var captchaRouter = require('./routes/captcha')
+var bannerRouter = require('./routes/banner')
 
 var app = express();
 
@@ -50,7 +52,8 @@ app.use(jwt({
   // 需要排除token验证的路由
   path: [
     { "url": "/api/admin/login", methods: ["POST"] },
-    { "url": "/res/captcha", methods: ["GET"] }
+    { "url": "/res/captcha", methods: ["GET"] },
+    { "url": "/api/banner", methods: ["GET"] }
   ]
 }))
 
@@ -58,6 +61,7 @@ app.use(jwt({
 // 使用路由中间件
 app.use('/api/admin', adminRouter);
 app.use('/res/captcha', captchaRouter);
+app.use('/api/banner', bannerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
