@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-09 21:55:14
+ * @LastEditTime: 2022-06-10 22:57:55
  * @LastEditors: your name
  * @Description: 初始化数据库
  */
@@ -33,7 +33,7 @@ console.log(sequelize.sync);
   // banner初始化
   const bannerCount = await bannerModel.count()
   console.log('bannerCount', bannerCount);
-  if (bannerCount) {
+  if (!bannerCount) {
     await bannerModel.bulkCreate([{
       "midImg": "/static/images/bg1_mid.jpg",
       "bigImg": "/static/images/bg1_big.jpg",

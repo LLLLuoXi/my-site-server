@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-09 21:27:37
+ * @LastEditTime: 2022-06-10 22:25:13
  * @LastEditors: your name
  * @Description: 
  */
@@ -27,6 +27,7 @@ require('./dao/db')
 var adminRouter = require('./routes/admin');
 var captchaRouter = require('./routes/captcha')
 var bannerRouter = require('./routes/banner')
+var uploadRouter = require('./routes/upload')
 
 var app = express();
 
@@ -62,6 +63,7 @@ app.use(jwt({
 app.use('/api/admin', adminRouter);
 app.use('/res/captcha', captchaRouter);
 app.use('/api/banner', bannerRouter);
+app.use('/api/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
