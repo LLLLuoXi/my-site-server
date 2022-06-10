@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-10 23:53:42
+ * @LastEditTime: 2022-06-11 00:01:35
  * @LastEditors: your name
  * @Description: 
  */
@@ -8,7 +8,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { uploading } = require('../utils/tool')
+const { uploading, formatResponse } = require('../utils/tool')
 const { UploadError } = require('../utils/errors')
 
 // 上传图片
