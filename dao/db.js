@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-10 22:57:55
+ * @LastEditTime: 2022-06-11 14:41:19
  * @LastEditors: your name
  * @Description: 初始化数据库
  */
@@ -9,6 +9,7 @@ const sequelize = require('./dbConnect')
 const md5 = require('md5')
 const adminModel = require('./model/adminModel')
 const bannerModel = require('./model/bannerModel')
+const blogTypeModel = require('./model/blogTypeModel')
 
 console.log(sequelize.sync);
 (async function () {

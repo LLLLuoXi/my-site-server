@@ -1,31 +1,27 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-11 14:37:21
+ * @LastEditTime: 2022-06-11 14:39:21
  * @LastEditors: your name
- * @Description: banner 首页标题数据模型
+ * @Description: blogType 模型
  */
 
 const { DataTypes } = require('sequelize');
 const sequelize = require('../dbConnect')
 
-module.exports = sequelize.define("banner", {
+module.exports = sequelize.define("blogType", {
   // 表里的字段
-  midImg: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  bigImg: {
+  articleCount: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  title: {
-    type: DataTypes.STRING,
+  order: {
+    type: DataTypes.INTEGER,
     allowNull: false
   },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }
 }, {
   freezeTableName: true,
   createdAt: false,
