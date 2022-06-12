@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-11 14:41:19
+ * @LastEditTime: 2022-06-12 18:51:36
  * @LastEditors: your name
  * @Description: 初始化数据库
  */
@@ -10,9 +10,16 @@ const md5 = require('md5')
 const adminModel = require('./model/adminModel')
 const bannerModel = require('./model/bannerModel')
 const blogTypeModel = require('./model/blogTypeModel')
+const blogModel = require('./model/blogModel')
 
 console.log(sequelize.sync);
 (async function () {
+  // 定义模型之间的关联关系
+
+  // 博客和博客分类之间的关联
+  blogTypeModel.hasMany(blogModel, { foreignKey: 'categoryId', targetKey: "id" });
+  blogModel.belongsTo(blogTypeModel, { foreignKey: 'categoryId', targetKey: "id", as: "category" });
+
   // 同步数据模型和表
   await sequelize.sync({
     alter: true,

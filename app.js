@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-11 20:30:57
+ * @LastEditTime: 2022-06-12 16:17:30
  * @LastEditors: your name
  * @Description: 
  */
@@ -29,6 +29,7 @@ var captchaRouter = require('./routes/captcha')
 var bannerRouter = require('./routes/banner')
 var uploadRouter = require('./routes/upload')
 var blogTypeRouter = require('./routes/blogType')
+var blogRouter = require('./routes/blog')
 
 var app = express();
 
@@ -66,6 +67,7 @@ app.use('/res/captcha', captchaRouter);
 app.use('/api/banner', bannerRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/blogType', blogTypeRouter);
+app.use('/api/blog', blogRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-11 21:26:02
+ * @LastEditTime: 2022-06-12 17:38:22
  * @LastEditors: your name
  * @Description: 
  */
@@ -43,4 +43,12 @@ module.exports.deleteBlogTypeDao = async function (id) {
       id
     }
   })
+}
+
+// 根据id新增对应博客分类的文章数量
+module.exports.addBlogToType = async function (id) {
+  const data = await blogTypeModel.findByPk(id);
+  data.articleCount++;
+  await data.save();
+  return;
 }
