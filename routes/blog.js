@@ -1,13 +1,13 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-12 18:51:21
+ * @LastEditTime: 2022-06-14 15:59:20
  * @LastEditors: your name
  * @Description: 
  */
 
 const express = require('express');
 const router = express.Router();
-const { addBlogService, findBlogByPageService } = require('../service/blogService')
+const { addBlogService, findBlogByPageService, findBlogByIdService, updateBlogService, deleteBlogService } = require('../service/blogService')
 
 // 添加博客
 router.post('/', async function (req, res, next) {
@@ -21,17 +21,19 @@ router.get('/', async function (req, res, next) {
 
 // 获取其中一个博客
 router.get('/:id', async function (req, res, next) {
-
+  const reqHeaders = req.headers;
+  // 根据有没有token来判断是前台页面还是后退页面访问
+  res.send(await findBlogByIdService(req.params.id, reqHeaders.authorization))
 })
 
 // 修改其中一个博客
 router.put('/:id', async function (req, res, next) {
-
+  res.send(await updateBlogService(req.params.id, req.body))
 })
 
 // 删除其中一个博客
 router.delete('/:id', async function (req, res, next) {
-
+  res.send(await deleteBlogService(req.params.id))
 })
 
 module.exports = router;

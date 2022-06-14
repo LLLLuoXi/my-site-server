@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-12 16:17:30
+ * @LastEditTime: 2022-06-14 15:40:13
  * @LastEditors: your name
  * @Description: 
  */
@@ -56,7 +56,10 @@ app.use(jwt({
   path: [
     { "url": "/api/admin/login", methods: ["POST"] },
     { "url": "/res/captcha", methods: ["GET"] },
-    { "url": "/api/banner", methods: ["GET"] }
+    { "url": "/api/banner", methods: ["GET"] },
+    { "url": "/api/blogtype", methods: ["GET"] },
+    { "url": "/api/blog", methods: ["GET"] },
+    { "url": /\/api\/blog\/\d/, methods: ["GET"] },
   ]
 }))
 

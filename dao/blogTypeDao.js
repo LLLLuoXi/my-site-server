@@ -20,8 +20,8 @@ module.exports.findAllBlogTypeDao = async function () {
 
 // 获取其中一个博客分类
 module.exports.findOneBlogTypeDao = async function (id) {
-  const { dataValues } = await blogTypeModel.findByPk(id)
-  return dataValues
+  const data = await blogTypeModel.findByPk(id)
+  return data
 }
 
 // 修改其中一个博客分类

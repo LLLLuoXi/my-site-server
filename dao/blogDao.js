@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-12 18:48:58
+ * @LastEditTime: 2022-06-14 16:06:34
  * @LastEditors: your name
  * @Description: 
  */
@@ -45,4 +45,35 @@ module.exports.findBlogByPageDao = async function (pageInfo) {
       limit: pageInfo.limit * 1
     })
   }
+}
+
+//根据id获取一篇文章
+module.exports.findBlogByIdDao = async function (id) {
+  return await blogModel.findByPk(id, {
+    include: [
+      {
+        model: blogTypeModel,
+        as: "category"
+      }
+    ]
+  })
+}
+
+// 修改博文
+module.exports.updateBlogDao = async function (id, newBlogInfo) {
+  await blogModel.update(newBlogInfo, {
+    where: {
+      id
+    }
+  })
+  return await blogModel.findByPk(id)
+}
+
+// 删除文章
+module.exports.deleteBlogDao = async function (id) {
+  return await blogModel.destroy({
+    where: {
+      id
+    }
+  })
 }

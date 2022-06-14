@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-11 21:56:22
+ * @LastEditTime: 2022-06-14 16:10:41
  * @LastEditors: your name
  * @Description: 
  */
@@ -65,7 +65,8 @@ module.exports.findAllBlogTypeService = async function () {
  * @description 获取其中一个博客分类
  */
 module.exports.findOneBlogTypeService = async function (id) {
-  return formatResponse(0, "", await findOneBlogTypeDao(id))
+  const { dataValues } = await findOneBlogTypeDao(id)
+  return formatResponse(0, "", dataValues)
 }
 
 /**

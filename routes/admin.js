@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-08 22:02:09
+ * @LastEditTime: 2022-06-14 15:30:12
  * @LastEditors: your name
  * @Description: 
  */
@@ -14,6 +14,9 @@ const { ValidationError } = require('../utils/errors')
 router.post('/login', async function (req, res, next) {
   console.log(req.body, '>>>');
   console.log(req.session, '>>>');
+  if (!req.session.captcha) {
+    throw new ValidationError("验证码失效，请重新发送并登录")
+  }
   // 验证码验证
   if (req.body.captcha.toLowerCase() !== req.session.captcha.toLowerCase()) {
     // 输入验证码不正确
