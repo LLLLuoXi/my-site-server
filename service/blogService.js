@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-14 16:13:01
+ * @LastEditTime: 2022-06-14 20:23:54
  * @LastEditors: your name
  * @Description: 
  */
@@ -9,7 +9,7 @@ const { validate } = require('validate.js')
 const blogTypeModel = require('../dao/model/blogTypeModel')
 const { addBlogDao, findBlogByPageDao, findBlogByIdDao, updateBlogDao, deleteBlogDao } = require("../dao/blogDao");
 const { ValidationError } = require("../utils/errors")
-const { handleDataPattern, formatResponse } = require("../utils/tool")
+const { handleDataPattern, formatResponse, handleTOC } = require("../utils/tool")
 const { addBlogToType } = require("../dao/blogTypeDao")
 
 // 扩展验证规则
@@ -27,9 +27,13 @@ validate.validators.categoryIdIsExist = async function (value) {
  * @desciption 添加博客
  */
 module.exports.addBlogService = async function (newBlogInfo) {
-  // 处理TOC 
+  // 处理TOC
+  console.log('newBlogInfo', newBlogInfo);
+  newBlogInfo = handleTOC(newBlogInfo);
   // 将处理好的toc格式转为字符串
-  newBlogInfo.toc = JSON.stringify('["a":"b]')
+  newBlogInfo.toc = JSON.stringify(newBlogInfo.toc)
+
+  console.log(newBlogInfo)
 
   // 初始化新文章的其他信息
   // 阅读量
@@ -161,7 +165,9 @@ module.exports.updateBlogService = async function (id, newBlogInfo) {
   // 判断正文内容有没有改变，因为正文内容的改变会影响toc
   if (newBlogInfo.htmlContent) {
     // 有改动, 需要重新处理toc目录
-    newBlogInfo.toc = JSON.stringify('["a":"b]')
+    newBlogInfo = handleTOC(newBlogInfo);
+    // 将处理好的toc格式转为字符串
+    newBlogInfo.toc = JSON.stringify(newBlogInfo.toc)
   }
   const { dataValues } = await updateBlogDao(id, newBlogInfo)
   return formatResponse(0, "", dataValues)
