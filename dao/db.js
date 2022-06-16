@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-15 20:19:41
+ * @LastEditTime: 2022-06-16 22:04:15
  * @LastEditors: your name
  * @Description: 初始化数据库
  */
@@ -13,6 +13,7 @@ const blogTypeModel = require('./model/blogTypeModel')
 const blogModel = require('./model/blogModel')
 const demoModel = require('./model/demoModel')
 const messageModel = require('./model/messageModel')
+const aboutModel = require('./model/aboutModel')
 
 console.log(sequelize.sync);
 (async function () {
@@ -65,6 +66,16 @@ console.log(sequelize.sync);
       "description": "动漫中经常出现的日本农村街道，一份独特的恬静"
     }]);
     console.log("初始化首页标语数据...");
+  }
+
+  // about me 初始化
+  const aboutCount = await adminModel.count()
+  console.log('aboutCount', aboutCount);
+  if (!aboutCount) {
+    await aboutModel.create({
+      url: "https://test/网页简历/index.html"
+    });
+    console.log("初始化关于我数据...");
   }
 
   console.log('数据库数据已经准备完毕');
