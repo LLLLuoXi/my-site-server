@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-16 21:57:23
+ * @LastEditTime: 2022-06-16 23:25:39
  * @LastEditors: your name
  * @Description: 
  */
@@ -33,6 +33,7 @@ var blogRouter = require('./routes/blog')
 var demoRouter = require('./routes/demo')
 var messageRouter = require('./routes/message')
 var aboutRouter = require('./routes/about')
+var settingRouter = require('./routes/setting')
 
 var app = express();
 
@@ -67,6 +68,7 @@ app.use(jwt({
     { "url": "/api/message", methods: ["GET", "POST"] },
     { "url": "/api/comment", methods: ["GET", "POST"] },
     { "url": "/api/about", methods: ["GET"] },
+    { "url": "/api/setting", methods: ["GET"] },
   ]
 }))
 
@@ -82,6 +84,7 @@ app.use('/api/project', demoRouter);
 app.use('/api/comment', messageRouter);
 app.use('/api/message', messageRouter);
 app.use('/api/about', aboutRouter);
+app.use('/api/setting', settingRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

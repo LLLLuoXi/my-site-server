@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-16 22:04:15
+ * @LastEditTime: 2022-06-16 23:14:02
  * @LastEditors: your name
  * @Description: 初始化数据库
  */
@@ -14,6 +14,7 @@ const blogModel = require('./model/blogModel')
 const demoModel = require('./model/demoModel')
 const messageModel = require('./model/messageModel')
 const aboutModel = require('./model/aboutModel')
+const settingModel = require('./model/settingModel')
 
 console.log(sequelize.sync);
 (async function () {
@@ -76,6 +77,28 @@ console.log(sequelize.sync);
       url: "https://test/网页简历/index.html"
     });
     console.log("初始化关于我数据...");
+  }
+
+  // 全局设置数据初始化
+  const settingCount = await settingModel.count();
+  if (!settingCount) {
+    // 如果没有数据就进行初始化
+    await settingModel.create({
+      avatar: '/static/images/avatar.jpeg',
+      siteTitle: 'LLLLuoxi个人空间',
+      github: 'https://github.com/LLLLuoXi',
+      qq: '2652445066',
+      qqQrCode:
+        '/static/images/zuotian9652.jpg',
+      weixin: 'ARikc_18',
+      weixinQrCode:
+        '/static/images/avatar.jpeg',
+      mail: 'luoxioooo@126.com',
+      icp: 'ICP备17001719号',
+      githubName: 'LLLLuoXi',
+      favicon: 'https://s2.loli.net/2022/02/21/RiT8avUPeGgLpX3.png',
+    });
+    console.log("初始化全局设置数据...");
   }
 
   console.log('数据库数据已经准备完毕');
