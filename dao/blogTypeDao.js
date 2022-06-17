@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-12 17:38:22
+ * @LastEditTime: 2022-06-17 22:29:20
  * @LastEditors: your name
  * @Description: 
  */
@@ -49,6 +49,7 @@ module.exports.deleteBlogTypeDao = async function (id) {
 module.exports.addBlogToType = async function (id) {
   const data = await blogTypeModel.findByPk(id);
   data.articleCount++;
+  console.log('data>>>>>>', data);
   await data.save();
   return;
 }

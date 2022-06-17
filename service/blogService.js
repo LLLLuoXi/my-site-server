@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-14 20:23:54
+ * @LastEditTime: 2022-06-17 23:14:03
  * @LastEditors: your name
  * @Description: 
  */
@@ -8,9 +8,11 @@
 const { validate } = require('validate.js')
 const blogTypeModel = require('../dao/model/blogTypeModel')
 const { addBlogDao, findBlogByPageDao, findBlogByIdDao, updateBlogDao, deleteBlogDao } = require("../dao/blogDao");
+const { deleteMessageByBlogIdDao } = require("../dao/messageDao");
 const { ValidationError } = require("../utils/errors")
 const { handleDataPattern, formatResponse, handleTOC } = require("../utils/tool")
-const { addBlogToType } = require("../dao/blogTypeDao")
+const { addBlogToType, findOneBlogTypeDao } = require("../dao/blogTypeDao");
+const blogModel = require('../dao/model/blogModel');
 
 // 扩展验证规则
 validate.validators.categoryIdIsExist = async function (value) {
@@ -169,6 +171,19 @@ module.exports.updateBlogService = async function (id, newBlogInfo) {
     // 将处理好的toc格式转为字符串
     newBlogInfo.toc = JSON.stringify(newBlogInfo.toc)
   }
+  // 涉及一个问题，如果文章分类有没有修改，如果有修改，之前的文章分类对应的文章数量要自建，新的文章分类对应的文章数量需要自增
+  const { dataValues: oldBlogInfo } = await findBlogByIdDao(id)
+  if (newBlogInfo.categoryId !== oldBlogInfo.categoryId) {
+    // 说明修改了此文章分类 信息，那么修改前后的分类对应文章数量要做出修改
+    // 旧的自减
+    const oldBolgType = await findOneBlogTypeDao(oldBlogInfo.categoryId)
+    oldBolgType.articleCount--;
+    await oldBolgType.save()
+    // 新的自增
+    const newBolgType = await findOneBlogTypeDao(newBlogInfo.categoryId)
+    newBolgType.articleCount++;
+    await newBolgType.save()
+  }
   const { dataValues } = await updateBlogDao(id, newBlogInfo)
   return formatResponse(0, "", dataValues)
 }
@@ -187,7 +202,7 @@ module.exports.deleteBlogService = async function (id) {
   categoryInfo.articleCount--
   await categoryInfo.save()
   // 对应的评论也要删除
-
+  await deleteMessageByBlogIdDao(id)
   // 删除文章
   await deleteBlogDao(id)
   return formatResponse(0, "", true)

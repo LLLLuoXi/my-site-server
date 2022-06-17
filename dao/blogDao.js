@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-14 16:06:34
+ * @LastEditTime: 2022-06-17 22:35:23
  * @LastEditors: your name
  * @Description: 
  */
@@ -74,6 +74,19 @@ module.exports.deleteBlogDao = async function (id) {
   return await blogModel.destroy({
     where: {
       id
+    }
+  })
+}
+
+/**
+ * 
+ * @param {*} categoryId 文章类别id
+ * @description 根据文章类别id 统计对应相关文章数量
+ */
+module.exports.blogCountByBlogType = async function (categoryId) {
+  return await blogModel.count({
+    where: {
+      categoryId
     }
   })
 }

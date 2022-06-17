@@ -1,12 +1,13 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-14 16:10:41
+ * @LastEditTime: 2022-06-17 22:37:29
  * @LastEditors: your name
  * @Description: 
  */
 
 const { validate } = require('validate.js')
 const { addBlogTypeDao, findAllBlogTypeDao, findOneBlogTypeDao, updateBlogTypeDao, deleteBlogTypeDao } = require("../dao/blogTypeDao")
+const { blogCountByBlogType } = require('../dao/blogDao')
 const { handleDataPattern, formatResponse } = require("../utils/tool")
 const { ValidationError } = require("../utils/errors")
 
@@ -88,9 +89,10 @@ module.exports.updateBlogTypeService = async function (id, blogInfo) {
  * @returns 
  */
 module.exports.deleteBlogTypeService = async function (id) {
+  const count = await blogCountByBlogType(id)
   await deleteBlogTypeDao(id)
   // 这里需要返回受影响的文章的数量 .....
-  return formatResponse(0, "", true)
+  return formatResponse(0, "", count)
 }
 
 

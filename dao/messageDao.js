@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-06-15 21:48:51
+ * @LastEditTime: 2022-06-17 21:44:11
  * @LastEditors: your name
  * @Description: 
  */
@@ -64,11 +64,23 @@ module.exports.findMessageByPageDao = async function (pageInfo) {
 
 }
 
-// 删除留言或者评论
+// 删除留言或者评论（传入的id 是message表的 主键id）
 module.exports.deleteMessageDao = async function (id) {
   return await messageModel.destroy({
     where: {
       id
     }
   })
+}
+
+
+// 删除评论（传入的id是message表中的blogI）
+module.exports.deleteMessageByBlogIdDao = async function (blogId) {
+  return await messageModel.destroy({
+    where: {
+      blogId
+    }
+  })
+
+
 }
